@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { DataTable, type DataTableColumn } from '@components/DataTable'
 import HeaderInformation from '@components/HeaderInformation'
-import { Button, Flex, Text, Badge, Dialog } from '@radix-ui/themes'
+import { Button, Flex, Text, Badge } from '@radix-ui/themes'
 import { PlusIcon, Pencil1Icon, TrashIcon } from '@radix-ui/react-icons'
 import { useRoles, useDeleteRole } from '@applications/queries/rbac'
 import type { Role } from '@api/rbac'
-import CreateRoleDialog from './CreateRoleDialog'
-import EditRoleDialog from './EditRoleDialog'
+import CreateRoleDialog from '../CreateRoleDialog'
+import EditRoleDialog from '../EditRoleDialog'
+
 
 export default function ListRoles() {
   const [page, setPage] = useState(1)

@@ -1,20 +1,24 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dialog, Button, TextField, TextArea, Flex, Text } from '@radix-ui/themes'
-import { useCreateRole } from '@applications/queries/rbac'
+import { useUpdateRole } from '@applications/queries/rbac'
+import type { Role } from '@api/rbac'
 
-interface CreateRoleDialogProps {
+interface EditRoleDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  role: Role | null
 }
 
 interface FormData {
   name: string
   display_name: string
   description?: string
+  is_active: boolean
 }
 
-export default function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) {
-  const createRoleMutation = useCreateRole()
+export default function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps) {
+  const updateRoleMutation = useUpdateRole()
 
   const {
     register,
@@ -26,16 +30,29 @@ export default function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialo
       name: '',
       display_name: '',
       description: '',
+      is_active: true,
     },
   })
 
+  useEffect(() => {
+    if (role) {
+      reset({
+        name: role.name,
+        display_name: role.display_name,
+        description: role.description || '',
+        is_active: role.is_active,
+      })
+    }
+  }, [role, reset])
+
   const onSubmit = async (data: FormData) => {
+    if (!role) return
+
     try {
-      await createRoleMutation.mutateAsync(data)
-      reset()
+      await updateRoleMutation.mutateAsync({ id: role.id, data })
       onOpenChange(false)
     } catch (error) {
-      console.error('Failed to create role:', error)
+      console.error('Failed to update role:', error)
     }
   }
 
@@ -46,12 +63,14 @@ export default function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialo
     onOpenChange(open)
   }
 
+  if (!role) return null
+
   return (
     <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Content style={{ maxWidth: 500 }}>
-        <Dialog.Title>Create New Role</Dialog.Title>
+        <Dialog.Title>Edit Role</Dialog.Title>
         <Dialog.Description size="2" mb="4">
-          Create a new role with specific permissions
+          Update role information and settings
         </Dialog.Description>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,10 +82,16 @@ export default function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialo
               <TextField.Root
                 placeholder="e.g., admin, manager, user"
                 {...register('name', { required: 'Role name is required' })}
+                disabled={role.is_system}
               />
               {errors.name && (
                 <Text size="1" color="red">
                   {errors.name.message}
+                </Text>
+              )}
+              {role.is_system && (
+                <Text size="1" color="gray">
+                  System roles cannot be renamed
                 </Text>
               )}
             </div>
@@ -96,6 +121,19 @@ export default function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialo
               />
             </div>
 
+            <div>
+              <Flex align="center" gap="2">
+                <input
+                  type="checkbox"
+                  id="is_active"
+                  {...register('is_active')}
+                />
+                <Text as="label" htmlFor="is_active" size="2">
+                  Active
+                </Text>
+              </Flex>
+            </div>
+
             <Flex gap="3" justify="end" mt="4">
               <Dialog.Close>
                 <Button variant="soft" color="gray">
@@ -104,9 +142,9 @@ export default function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialo
               </Dialog.Close>
               <Button
                 type="submit"
-                disabled={createRoleMutation.isPending}
+                disabled={updateRoleMutation.isPending}
               >
-                {createRoleMutation.isPending ? 'Creating...' : 'Create Role'}
+                {updateRoleMutation.isPending ? 'Updating...' : 'Update Role'}
               </Button>
             </Flex>
           </Flex>

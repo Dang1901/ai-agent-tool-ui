@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { Dialog, Button, TextField, TextArea, Flex, Text, Select } from '@radix-ui/themes'
 import { useCreatePermission } from '@applications/queries/rbac'
-import { useState } from 'react'
 
 interface CreatePermissionDialogProps {
   open: boolean

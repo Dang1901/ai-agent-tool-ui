@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getUsers, type User } from '@api/user'
+import { getUsers } from '@api/user'
 
 // User queries - Read only
 export function useUsers(page = 1, pageSize = 100, search?: string, isActive?: boolean) {

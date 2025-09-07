@@ -11,7 +11,7 @@ export default function UserDetail() {
   const { id } = useParams<{ id: string }>()
   const userName = `User ${id}`
   const [searchParams, setSearchParams] = useSearchParams()
-  const [isEditOpen, setEditOpen] = useState(false);
+  const [, setEditOpen] = useState(false);
   const current = searchParams.get('tab') || 'profile'
   const tabValues = [
     { key: 'profile', label: 'Profile' },

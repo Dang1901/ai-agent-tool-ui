@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Heading } from '@radix-ui/themes';
 import { FEATURE_ORDER, mockApiUpdatePermissionByUserId, type FeatureRow } from '../ListPermissionUser/tableConfig';
 import PermissionUserForm from '../FormPermissionUser';

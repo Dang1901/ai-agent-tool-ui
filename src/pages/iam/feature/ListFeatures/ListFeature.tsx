@@ -1,5 +1,5 @@
 import { DataTable, type DataTableColumn } from '@components/DataTable'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import HeaderInformation from '@components/HeaderInformation'
 import { Button, Flex, Text } from '@radix-ui/themes'
 import { PlusIcon } from '@radix-ui/react-icons'

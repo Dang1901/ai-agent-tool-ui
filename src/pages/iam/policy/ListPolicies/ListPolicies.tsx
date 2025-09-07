@@ -6,9 +6,10 @@ import { PlusIcon, Pencil1Icon, TrashIcon, EyeOpenIcon } from '@radix-ui/react-i
 import { usePolicies, useDeletePolicy } from '@applications/queries/abac'
 import { useTableParams } from '@hooks'
 import type { Policy } from '@api/abac'
-import CreatePolicyDialog from './CreatePolicyDialog'
-import EditPolicyDialog from './EditPolicyDialog'
-import PolicyDetailsDialog from './PolicyDetailsDialog'
+import CreatePolicyDialog from '../CreatePolicyDialog'
+import EditPolicyDialog from '../EditPolicyDialog'
+import PolicyDetailsDialog from '../PolicyDetailsDialog'
+
 
 
 interface PolicyFilters {

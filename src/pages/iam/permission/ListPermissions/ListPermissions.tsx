@@ -5,8 +5,9 @@ import { Button, Flex, Text, Badge, Select } from '@radix-ui/themes'
 import { PlusIcon, Pencil1Icon, TrashIcon } from '@radix-ui/react-icons'
 import { usePermissions, useDeletePermission } from '@applications/queries/rbac'
 import type { Permission } from '@api/rbac'
-import CreatePermissionDialog from './CreatePermissionDialog'
-import EditPermissionDialog from './EditPermissionDialog'
+import CreatePermissionDialog from '../CreatePermissionDialog'
+import EditPermissionDialog from '../EditPermissionDialog'
+
 
 export default function ListPermissions() {
   const [page, setPage] = useState(1)

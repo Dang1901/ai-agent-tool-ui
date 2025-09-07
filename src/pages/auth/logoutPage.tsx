@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Flex, Card, Spinner, Text, Heading } from '@radix-ui/themes'
+import { useLogout } from '@applications/mutations/auth'
 
 export default function LogoutPage() {
   const nav = useNavigate()

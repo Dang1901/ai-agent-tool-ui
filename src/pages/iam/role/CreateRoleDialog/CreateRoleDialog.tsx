@@ -1,13 +1,10 @@
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dialog, Button, TextField, TextArea, Flex, Text } from '@radix-ui/themes'
-import { useUpdateRole } from '@applications/queries/rbac'
-import type { Role } from '@api/rbac'
+import { useCreateRole } from '@applications/queries/rbac'
 
-interface EditRoleDialogProps {
+interface CreateRoleDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  role: Role | null
 }
 
 interface FormData {
@@ -17,15 +14,14 @@ interface FormData {
   is_active: boolean
 }
 
-export default function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps) {
-  const updateRoleMutation = useUpdateRole()
+export default function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) {
+  const createRoleMutation = useCreateRole()
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm<FormData>({
     defaultValues: {
       name: '',
@@ -35,27 +31,13 @@ export default function EditRoleDialog({ open, onOpenChange, role }: EditRoleDia
     },
   })
 
-  const isActive = watch('is_active')
-
-  useEffect(() => {
-    if (role) {
-      reset({
-        name: role.name,
-        display_name: role.display_name,
-        description: role.description || '',
-        is_active: role.is_active,
-      })
-    }
-  }, [role, reset])
-
   const onSubmit = async (data: FormData) => {
-    if (!role) return
-
     try {
-      await updateRoleMutation.mutateAsync({ id: role.id, data })
+      await createRoleMutation.mutateAsync(data)
+      reset()
       onOpenChange(false)
     } catch (error) {
-      console.error('Failed to update role:', error)
+      console.error('Failed to create role:', error)
     }
   }
 
@@ -66,14 +48,12 @@ export default function EditRoleDialog({ open, onOpenChange, role }: EditRoleDia
     onOpenChange(open)
   }
 
-  if (!role) return null
-
   return (
     <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Content style={{ maxWidth: 500 }}>
-        <Dialog.Title>Edit Role</Dialog.Title>
+        <Dialog.Title>Create New Role</Dialog.Title>
         <Dialog.Description size="2" mb="4">
-          Update role information and settings
+          Create a new role with specific permissions
         </Dialog.Description>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -85,16 +65,10 @@ export default function EditRoleDialog({ open, onOpenChange, role }: EditRoleDia
               <TextField.Root
                 placeholder="e.g., admin, manager, user"
                 {...register('name', { required: 'Role name is required' })}
-                disabled={role.is_system}
               />
               {errors.name && (
                 <Text size="1" color="red">
                   {errors.name.message}
-                </Text>
-              )}
-              {role.is_system && (
-                <Text size="1" color="gray">
-                  System roles cannot be renamed
                 </Text>
               )}
             </div>
@@ -145,9 +119,9 @@ export default function EditRoleDialog({ open, onOpenChange, role }: EditRoleDia
               </Dialog.Close>
               <Button
                 type="submit"
-                disabled={updateRoleMutation.isPending}
+                disabled={createRoleMutation.isPending}
               >
-                {updateRoleMutation.isPending ? 'Updating...' : 'Update Role'}
+                {createRoleMutation.isPending ? 'Creating...' : 'Create Role'}
               </Button>
             </Flex>
           </Flex>

@@ -21,7 +21,7 @@ export function useFilterParams<T extends FilterState = FilterState>(
   const [debouncedFilters, setDebouncedFilters] = useState<T>(initialFilters)
 
   // Debounce filter changes
-  const debounceTimeoutRef = useRef<NodeJS.Timeout>()
+  const debounceTimeoutRef = useRef<number | undefined>()
 
   const updateFilters = useCallback((newFilters: Partial<T>) => {
     setFilters(prev => ({ ...prev, ...newFilters }))
@@ -49,8 +49,8 @@ export function useFilterParams<T extends FilterState = FilterState>(
   }, [filters])
 
   const clearFilters = useCallback(() => {
-    setFilters(initialFilters)
-    setDebouncedFilters(initialFilters)
+    setFilters(initialFilters as T)
+    setDebouncedFilters(initialFilters as T)
   }, [initialFilters])
 
   const hasActiveFilters = useMemo(() => {

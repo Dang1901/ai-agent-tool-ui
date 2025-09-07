@@ -3,7 +3,7 @@ import { useFilterParams, type FilterConfig, type FilterState } from './useFilte
 
 export interface TableParamsConfig<T extends FilterState = FilterState> {
   pagination?: PaginationConfig
-  filters?: FilterConfig<T>
+  filters?: FilterConfig
 }
 
 export function useTableParams<T extends FilterState = FilterState>(

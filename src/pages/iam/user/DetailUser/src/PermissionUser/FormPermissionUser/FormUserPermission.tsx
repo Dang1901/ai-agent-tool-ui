@@ -1,4 +1,3 @@
-import React from 'react';
 import { MatrixDataTable } from '@components/MatrixDataTable';
 import { featureColumns, type FeatureRow } from '../ListPermissionUser/tableConfig';
 import type { ColumnDef } from '@components/MatrixDataTable';
