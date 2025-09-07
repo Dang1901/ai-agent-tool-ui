@@ -1,27 +1,23 @@
 // vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { fileURLToPath } from 'url'
-import { dirname, resolve } from 'path'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@app': resolve(__dirname, 'src/app'),
-      '@api': resolve(__dirname, 'src/api'),
-      '@assets': resolve(__dirname, 'src/assets'),
-      '@components': resolve(__dirname, 'src/components'),
-      '@features': resolve(__dirname, 'src/features'),
-      '@hooks': resolve(__dirname, 'src/hooks'),
-      '@pages': resolve(__dirname, 'src/pages'),
-      '@router': resolve(__dirname, 'src/router'),
-      '@store': resolve(__dirname, 'src/store'),
-      '@types': resolve(__dirname, 'src/types'),
-      '@applications': resolve(__dirname, 'src/applications'),
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@api': path.resolve(__dirname, 'src/api'),
+      '@assets': path.resolve(__dirname, 'src/assets'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@features': path.resolve(__dirname, 'src/features'),
+      '@hooks': path.resolve(__dirname, 'src/hooks'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@router': path.resolve(__dirname, 'src/router'),
+      '@store': path.resolve(__dirname, 'src/store'),
+      '@types': path.resolve(__dirname, 'src/types'),
+      '@applications': path.resolve(__dirname, 'src/applications'),
     },
   },
 })
