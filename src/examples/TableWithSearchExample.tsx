@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Flex, Text, TextField, Select } from '@radix-ui/themes'
 import { useTableParams, useSearch } from '@hooks'
 

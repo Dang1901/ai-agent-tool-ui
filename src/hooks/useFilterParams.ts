@@ -17,11 +17,11 @@ export function useFilterParams<T extends FilterState = FilterState>(
     debounceMs = 300
   } = config
 
-  const [filters, setFilters] = useState<T>(initialFilters)
-  const [debouncedFilters, setDebouncedFilters] = useState<T>(initialFilters)
+  const [filters, setFilters] = useState<T>(initialFilters as T)
+  const [debouncedFilters, setDebouncedFilters] = useState<T>(initialFilters as T)
 
   // Debounce filter changes
-  const debounceTimeoutRef = useRef<number | undefined>()
+  const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const updateFilters = useCallback((newFilters: Partial<T>) => {
     setFilters(prev => ({ ...prev, ...newFilters }))
