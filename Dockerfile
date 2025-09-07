@@ -13,7 +13,10 @@ RUN npm ci
 COPY . .
 
 # Build the app
-RUN npm run build
+RUN echo "Starting build process..." && \
+    npm run build && \
+    echo "Build completed successfully" && \
+    ls -la dist/
 
 # Production stage
 FROM node:18-alpine
@@ -26,6 +29,9 @@ RUN npm install -g serve
 # Copy built app from builder stage
 COPY --from=builder /app/dist ./dist
 
+# Copy health check script
+COPY healthcheck.js ./
+
 # Set default port
 ENV PORT=3000
 
@@ -34,7 +40,10 @@ EXPOSE $PORT
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:$PORT/ || exit 1
+    CMD node healthcheck.js
 
 # Start the app
-CMD serve -s dist -l $PORT
+CMD echo "Starting server on port $PORT" && \
+    echo "Contents of dist directory:" && \
+    ls -la dist/ && \
+    serve -s dist -l $PORT
